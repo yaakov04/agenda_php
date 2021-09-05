@@ -1,0 +1,22 @@
+{
+    "name": "diego/agenda_php",
+    "description": "Practica de backend con php 8",
+    "license": "MIT",
+    "authors": [{
+        "name": "Yaakov",
+        "email": "dbrionesmtz@yahoo.com"
+    }],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "App\\libs\\": "src/libs",
+            "Model\\": "src/models",
+            "Controllers\\": "src/controllers",
+            "Controllers\\Api\\": "src/controllers/api"
+        },
+        "files": [
+            "src/libs/app.php"
+        ]
+    }
+}
