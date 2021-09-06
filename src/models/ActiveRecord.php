@@ -13,6 +13,17 @@ class ActiveRecord{
     public static function setDB($database){
         self::$db = $database;
     }
+    
+    public function create(){
+		$properties = $this->sanitizeProperties();
+		$query = " INSERT INTO ". static::$table . " ( ";
+		$query .= join(', ', array_keys($properties));
+		$query .= " ) VALUES ( '";
+		$query .= join("', '",array_values($properties));
+		$query .= "') ";
+		$queryDB= self::$db->query($query);
+		return $queryDB;
+	}
 
 	public function validate(){
 		$columns=array_slice(static::$columnsDB,1);
@@ -45,5 +56,7 @@ class ActiveRecord{
 		}
 		return $sanitized;
 	}
+    
+	
     
 }
