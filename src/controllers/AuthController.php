@@ -3,6 +3,7 @@ namespace Controllers;
 
 use App\Router;
 use Model\User;
+use App\libs\OkResponse;
 use App\libs\ErrorResponse;
 
 class AuthController extends Controller{
@@ -16,19 +17,8 @@ class AuthController extends Controller{
 		self::validateRequestBody();
 		$user = new User(self::$requestBody);
 		$errors=$user->validate();
-		if (empty($errors))
-		{
-			$response = [
-            'message'=>'CREADO',
-            'description'=>'El usuario se creo correctamente',
-            'code'=>201,
-            'http_response'=>[
-                'message'=>'CREADO',
-                'code'=>201
-            ]
-        ];
-        header("Content-Type: application/json;");
-        echo json_encode($response,JSON_UNESCAPED_UNICODE);
+		if (empty($errors)){
+			echo OkResponse::success_201(['usuario'=>['id'=>'','username'=>'','email'=>'']],'La peticion se ha procesado correctamente');
 		}else
 		{
 			echo ErrorResponse::error_400($errors, 'Se proporcionó una sintaxis no válida para esta solicitud.');
