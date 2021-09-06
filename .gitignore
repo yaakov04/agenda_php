@@ -24,3 +24,4 @@ Homestead.json
 
 #
 agenda_php
+src/libs/config/config.php
