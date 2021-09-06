@@ -39,5 +39,17 @@ class User extends ActiveRecord{
 					}
 				}
 		}
-
+	
+	public function usernameExist(){
+		$query="SELECT id FROM ". self::$table ." WHERE username = '{$this->username}'";
+		$queryDB= self::$db->query($query);
+		return $queryDB->num_rows;
+	}
+	
+	public function emailExist(){
+		$query="SELECT id FROM ". self::$table ." WHERE email = '{$this->email}'";
+		$queryDB= self::$db->query($query);
+		return $queryDB->num_rows;
+	}
+	
 }
