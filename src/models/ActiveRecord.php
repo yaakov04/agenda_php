@@ -23,5 +23,27 @@ class ActiveRecord{
 				}
 			}
 		}
+		
+	public function properties()
+	{
+		$properties=[];
+		foreach(static::$columnsDB as $column)
+		{
+			if($column === 'id') continue;
+			$properties[$column]=$this->$column;
+		}
+		return $properties;
+	}	
+	
+	public function sanitizeProperties()
+	{
+		$properties=$this->properties();
+		$sanitized=[];
+		foreach($properties as $key => $value)
+		{
+			$sanitized[$key]=self::$db->escape_string($value);
+		}
+		return $sanitized;
+	}
     
 }
