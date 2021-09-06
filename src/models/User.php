@@ -39,6 +39,12 @@ class User extends ActiveRecord{
 					}
 				}
 		}
+		
+	public function passwordHash(){
+		$options=['cost'=>12];
+		$password = password_hash($this->password, PASSWORD_BCRYPT, $options);
+		return $password;
+	}
 	
 	public function usernameExist(){
 		$query="SELECT id FROM ". self::$table ." WHERE username = '{$this->username}'";

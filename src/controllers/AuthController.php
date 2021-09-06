@@ -20,6 +20,7 @@ class AuthController extends Controller{
 		$user->usernameExist()?$errors[]='Este nombre de usuario ya esta en uso':null;
 		$user->emailExist()?$errors[]='Este correo electronico ya esta en uso':null;
 		if (empty($errors)){
+			 $user->password = $user->passwordHash();
 			 $queryDB = $user->create();
 			 if ($queryDB){
 				 echo OkResponse::success_201(['usuario'=>['username'=>$user->username,'email'=>$user->email]],'La peticion se ha procesado correctamente');
