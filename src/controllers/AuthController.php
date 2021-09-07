@@ -47,7 +47,7 @@ class AuthController extends Controller{
 				$user_id=$user->usernameExist()->fetch_object()->id;
 				$dataToken = Token::setDataToken($user_id); 
 				$token = new Token($dataToken);
-				$queryDB = $token->create();
+				$queryDB = $token->saveToken($user_id);
 			 if ($queryDB){
 				 echo OkResponse::success_200(['token'=>['token'=>$token->token,'fecha'=>$token->fecha]],'La peticion se ha procesado correctamente');
 			 }

@@ -24,6 +24,17 @@ class ActiveRecord{
 		$queryDB= self::$db->query($query);
 		return $queryDB;
 	}
+	
+	public function update(){
+		$properties = $this->sanitizeProperties();
+		$values = [];
+		foreach($properties as $key => $value){
+			$values[] = "{$key} = '{$value}'";
+		}
+		$query =" UPDATE inventario SET ";
+		$query .= join(', ', $values);
+		$query .= " WHERE  ";
+	}
 
 	public function validate(){
 		$columns=array_slice(static::$columnsDB,1);
