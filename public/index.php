@@ -14,4 +14,5 @@ $request = new HttpRequest();
 $router = new Router($request);
 $router->add('/', [HomeController::class, 'index']);
 $router->add('/api/auth/signup', [AuthController::class, 'signup'], 'POST');
+$router->add('/api/auth/signin', [AuthController::class, 'signin'], 'POST');
 $router->run();

@@ -18,7 +18,7 @@ class User extends ActiveRecord{
         $this->password=$args['password']??null;
     }
     
-    public function validate(){
+    public function validateSignup(){
 		$columns=array_slice(self::$columnsDB,1);
 			foreach($columns as $element){
 				if (!$this->$element)
@@ -39,6 +39,16 @@ class User extends ActiveRecord{
 					}
 				}
 		}
+	
+	public function validateSignin(){
+		if (!$this->username){
+			self::$errors[] = "El nombre de usuario no puede ir vacio";
+		}
+		if (!$this->password){
+			self::$errors[] = "La contraseña no puede ir vacio";
+		}
+		return self::$errors;
+	}
 		
 	public function passwordHash(){
 		$options=['cost'=>12];
@@ -47,15 +57,21 @@ class User extends ActiveRecord{
 	}
 	
 	public function usernameExist(){
-		$query="SELECT id FROM ". self::$table ." WHERE username = '{$this->username}'";
+		$query="SELECT * FROM ". self::$table ." WHERE username = '{$this->username}'";
 		$queryDB= self::$db->query($query);
-		return $queryDB->num_rows;
+		return $queryDB;
 	}
 	
 	public function emailExist(){
 		$query="SELECT id FROM ". self::$table ." WHERE email = '{$this->email}'";
 		$queryDB= self::$db->query($query);
 		return $queryDB->num_rows;
+	}
+	
+	public function verifyPassword($userDB){
+		$userDB = $userDB->fetch_object();
+		$auth = password_verify($this->password, $userDB->password);
+		return $auth;
 	}
 	
 }
