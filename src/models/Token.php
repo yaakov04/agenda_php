@@ -20,6 +20,16 @@ class Token extends ActiveRecord{
         $this->usuario_id=$args['usuario_id']??null;
 	}
 	
+	public static function setDataToken($usuario_id){
+		$dataToken=[
+					'token'			=>self::generateToken(),
+					'fecha'			=>self::getDate(),
+					'activo'		=>1,
+					'usuario_id'	=>$usuario_id
+				];
+		return $dataToken;
+	}
+	
 	public static function generateToken(){
 		//Generate a random string.
 		$token = openssl_random_pseudo_bytes(16);

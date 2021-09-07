@@ -45,12 +45,7 @@ class AuthController extends Controller{
 			if (empty($errors)){
 				//crear token
 				$user_id=$user->usernameExist()->fetch_object()->id;
-				$dataToken=[
-					'token'			=>Token::generateToken(),
-					'fecha'			=>Token::getDate(),
-					'activo'		=>1,
-					'usuario_id'	=>$user_id
-				];
+				$dataToken = Token::setDataToken($user_id); 
 				$token = new Token($dataToken);
 				$queryDB = $token->create();
 			 if ($queryDB){
