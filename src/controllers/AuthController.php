@@ -3,6 +3,7 @@ namespace Controllers;
 
 use App\Router;
 use Model\User;
+use Model\Token;
 use App\libs\OkResponse;
 use App\libs\ErrorResponse;
 
@@ -28,8 +29,6 @@ class AuthController extends Controller{
 		}else{
 			echo ErrorResponse::error_400($errors, 'Se proporcionó una sintaxis no válida para esta solicitud.');
 		}
-		//Construir el login
-        var_dump('signup');
     }
     
     public static function signin(Router $router){
@@ -41,9 +40,22 @@ class AuthController extends Controller{
 		$errors=$user->validateSignin();
 		!$user->usernameExist()->num_rows?$errors[]='El nombre de usuario o la contraseña son incorrectos':null;
 		if (empty($errors)){
-			!$user->verifyPassword($user->usernameExist()) ? $errors[] ='El nombre de usuario o la contraseña son incorrectos':null;
+			$userDB = $user->usernameExist();
+			!$user->verifyPassword($userDB) ? $errors[] ='El nombre de usuario o la contraseña son incorrectos':'hyat';
 			if (empty($errors)){
 				//crear token
+				$user_id=$user->usernameExist()->fetch_object()->id;
+				$dataToken=[
+					'token'			=>Token::generateToken(),
+					'fecha'			=>Token::getDate(),
+					'activo'		=>1,
+					'usuario_id'	=>$user_id
+				];
+				$token = new Token($dataToken);
+				$queryDB = $token->create();
+			 if ($queryDB){
+				 echo OkResponse::success_200(['token'=>['token'=>$token->token,'fecha'=>$token->fecha]],'La peticion se ha procesado correctamente');
+			 }
 				var_dump('signin');
 			}else{
 				echo ErrorResponse::error_400($errors, 'Se proporcionó una sintaxis no válida para esta solicitud.');
@@ -51,8 +63,8 @@ class AuthController extends Controller{
 		}else{
 			echo ErrorResponse::error_400($errors, 'Se proporcionó una sintaxis no válida para esta solicitud.');
 		}
-		
-		
 	}
+	
+
     
 }
