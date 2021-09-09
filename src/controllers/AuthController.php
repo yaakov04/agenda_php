@@ -8,7 +8,6 @@ use App\libs\OkResponse;
 use App\libs\ErrorResponse;
 
 class AuthController extends Controller{
-    protected static $tokenExpires=7;
     
     
     public static function signup(Router $router){
@@ -41,7 +40,7 @@ class AuthController extends Controller{
 		!$user->usernameExist()->num_rows?$errors[]='El nombre de usuario o la contraseña son incorrectos':null;
 		if (empty($errors)){
 			$userDB = $user->usernameExist();
-			!$user->verifyPassword($userDB) ? $errors[] ='El nombre de usuario o la contraseña son incorrectos':'hyat';
+			!$user->verifyPassword($userDB) ? $errors[] ='El nombre de usuario o la contraseña son incorrectos':null;
 			if (empty($errors)){
 				//crear token
 				$user_id=$user->usernameExist()->fetch_object()->id;

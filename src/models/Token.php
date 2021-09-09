@@ -6,6 +6,8 @@ use DateTime;
 class Token extends ActiveRecord{
 	protected static $table = 'tokens';
     protected static $columnsDB=['id','token','fecha','activo','usuario_id'];
+    protected static $tokenExpires=7;
+    
     public $id;
     public $token;
     public $fecha;
@@ -52,6 +54,26 @@ class Token extends ActiveRecord{
 		return $dataToken;
 	}
 	
+	public static function verifyToken($token){
+		$query="SELECT * FROM ". self::$table ." WHERE token = '{$token}'";
+		$queryDB= self::$db->query($query);
+		return $queryDB;
+	}
+	
+	public static function verifyTokenDate($token){
+		$currentDate = new DateTime();
+		$tokenDate = new DateTime($token->fecha);
+		$dateDiff = $currentDate->diff($tokenDate)->format('%a');
+		return $dateDiff<self::$tokenExpires;
+	}
+	
+	public  static function verifyTokenActive($token){
+		if ($token->activo){
+			return true;
+		}
+		return false;
+	}
+	
 	protected static function generateToken(){
 		//Generate a random string.
 		$token = openssl_random_pseudo_bytes(16);
@@ -72,5 +94,7 @@ class Token extends ActiveRecord{
 		$queryDB= self::$db->query($query);
 		return $queryDB;
 	}
+	
+	
 	
 }

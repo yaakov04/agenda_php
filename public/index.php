@@ -9,10 +9,12 @@ use App\libs\HttpRequest;
 use App\Router;
 use Controllers\HomeController;
 use Controllers\AuthController;
+use Controllers\ContactosController;
 
 $request = new HttpRequest();
 $router = new Router($request);
 $router->add('/', [HomeController::class, 'index']);
 $router->add('/api/auth/signup', [AuthController::class, 'signup'], 'POST');
 $router->add('/api/auth/signin', [AuthController::class, 'signin'], 'POST');
+$router->add('/api/contactos', [ContactosController::class, 'create'], 'POST');
 $router->run();
