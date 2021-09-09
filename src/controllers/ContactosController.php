@@ -47,7 +47,7 @@ class ContactosController extends Controller{
 		self::validateRequestBody();
 		$token=self::verifyToken(self::validateToken());
 		$errors=[];
-		$contacto = Contacto::find($id);
+		$contacto = Contacto::find($id, $token->usuario_id);
 		self::existContacto($contacto, $id);
 		$contacto->sync(self::$requestBody);
 		$contacto->editado = Controller::getDate();
@@ -67,12 +67,30 @@ class ContactosController extends Controller{
 		}else{
 			echo ErrorResponse::error_400($errors, 'Se proporcionó una sintaxis no válida para esta solicitud.');
 		}
-		var_dump('update');
+		
+	}
+	
+	public static function find(Router $router){
+		self::start($router);
+		$id=self::$router->getUrlParam(1);
+		self::validateParamInt($id);
+		self::validateRequestMethod('GET');
+		$token=self::verifyToken(self::validateToken());
+		$contacto = Contacto::find($id, $token->usuario_id);
+		self::existContacto($contacto, $id);
+		$contactoResultado=[
+			'Contacto:'=>[
+				'nombre'=> $contacto->nombre,
+				'telefono'=> $contacto->telefono,
+				'correo'=> $contacto->correo
+			]
+		];
+		echo OkResponse::responseContent($contactoResultado);
 	}
 	
 	protected static function existContacto($contacto, $id){
 		if (!$contacto){
-			die(ErrorResponse::error_404("El cotacto con el id: {$id} no existe", 'No pudimos encontrar el recurso que solicitó.'));
+			die(ErrorResponse::error_404("El contacto con el id: {$id} no existe", 'No pudimos encontrar el recurso que solicitó.'));
 		}
 	}
 	

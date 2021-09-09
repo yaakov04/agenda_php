@@ -18,4 +18,10 @@ class OkResponse extends Response{
 	public static function success_202($description,$message=null,){
         return self::response($message??self::$message202,$description,'202',self::$message201);
     }
+    
+    public static function responseContent($arg=[]){
+		$response = $arg;
+		header("Content-Type: application/json;");
+        return json_encode($response,JSON_UNESCAPED_UNICODE);
+	}
 }

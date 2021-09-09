@@ -39,8 +39,14 @@ class ActiveRecord{
 		return $queryDB;
 	}
 	
-	public static function find($id){
-		$query= "SELECT * FROM ". static::$table ." WHERE id = ${id}";
+	public static function all($usuario_id){
+		$query= "SELECT * FROM ". static::$table ." WHERE usuario_id = {$usuario_id}";
+		$queryDB=self::sqlQuery($query);		
+		return $queryDB;
+	}
+	
+	public static function find($id, $usuario_id){
+		$query= "SELECT * FROM ". static::$table ." WHERE id = ${id} AND usuario_id = {$usuario_id}";
 		$queryDB=self::sqlQuery($query);		
 		return array_shift($queryDB);
 	}
