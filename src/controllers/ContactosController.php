@@ -80,12 +80,25 @@ class ContactosController extends Controller{
 		self::existContacto($contacto, $id);
 		$contactoResultado=[
 			'Contacto:'=>[
+				'id'=> $contacto->id,
 				'nombre'=> $contacto->nombre,
 				'telefono'=> $contacto->telefono,
 				'correo'=> $contacto->correo
 			]
 		];
 		echo OkResponse::responseContent($contactoResultado);
+	}
+	
+	public static function all(Router $router){
+		self::start($router);
+		self::validateRequestMethod('GET');
+		$token=self::verifyToken(self::validateToken());
+		$contactos = Contacto::all($token->usuario_id);
+		if ($contactos){
+			echo OkResponse::responseContent($contactos);
+		}else{
+			echo OkResponse::success_200(["La consulta arrojo un conjunto de valores vacío","Aun no se han agregado contactos"],'La peticion se ha procesado correctamente');
+		}
 	}
 	
 	protected static function existContacto($contacto, $id){
