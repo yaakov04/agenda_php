@@ -4,6 +4,7 @@ namespace Controllers;
 use App\Router;
 use App\libs\ErrorResponse;
 use Model\Token;
+use DateTime;
 
 abstract class Controller{
 	protected static $router;
@@ -44,5 +45,18 @@ abstract class Controller{
 			die( ErrorResponse::error_401('El token enviado es invalido. Por favor Iniciar sesión.','No tiene autorización para acceder al recurso solicitado.'));
 		}
 		return $token;
+	}
+	
+	public static function validateParamInt($param){
+		$valid=filter_var($param, FILTER_VALIDATE_INT);
+		if (!$valid){
+			die( ErrorResponse::error_400("''{$param}' no es un parametro valido",'Se proporcionó una sintaxis no válida para esta solicitud.'));
+		}
+	}
+	
+	public static function getDate(){
+		$currentDate= new DateTime();
+		$date=$currentDate->format('Y-m-d H:i:s');
+		return $date;
 	}
 }

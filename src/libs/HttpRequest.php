@@ -15,13 +15,21 @@ class HttpRequest{
         $this->requestBody=json_decode(file_get_contents('php://input'),true);
     }
 
-    public function getUrl(){
-        return $this->url;
-    }
-    public function getMethod(){
-        return $this->requestMethod;
-    }
-    public function getRequestBody(){
-        return $this->requestBody;
-    }
+	public function getUrl(){
+		return $this->url;
+	}
+	public function getMethod(){
+		return $this->requestMethod;
+	}
+	public function getRequestBody(){
+		return $this->requestBody;
+	}
+
+	public function getParams(){
+	   return $this->urlParams??null;
+	}
+
+	public function getParam(int $index=0){
+	   return $this->urlParams[$index]??null;
+	}
 }

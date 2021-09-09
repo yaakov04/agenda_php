@@ -33,7 +33,35 @@ class ActiveRecord{
 		}
 		$query =" UPDATE ". static::$table ." SET ";
 		$query .= join(', ', $values);
-		$query .= " WHERE  ";
+		$query .= " WHERE id = '" .$this->id."' ";
+		$query .= " LIMIT 1 ";
+		$queryDB= self::$db->query($query);
+		return $queryDB;
+	}
+	
+	public static function find($id){
+		$query= "SELECT * FROM ". static::$table ." WHERE id = ${id}";
+		$queryDB=self::sqlQuery($query);		
+		return array_shift($queryDB);
+	}
+	
+	public  static function sqlQuery($query){
+		$queryDB= self::$db->query($query);
+		$arrayResult=[];
+		while($result = $queryDB->fetch_assoc()){
+			$arrayResult[]=self::createObject($result);
+		}
+		return $arrayResult;
+	}
+	
+	public static function createObject($result){
+		$obj= new static;
+		foreach($result as $key => $value){
+			if(property_exists($obj, $key)){
+				$obj->$key=$value;
+			}
+		}
+		return $obj;
 	}
 
 	public function validate(){
@@ -68,6 +96,13 @@ class ActiveRecord{
 		return $sanitized;
 	}
     
+    public function sync($args){
+		foreach($args as $key => $value){
+			if (property_exists($this, $key)&&!is_null($value)){
+				$this->$key = $value;
+			}
+		}
+	}
 	
     
 }

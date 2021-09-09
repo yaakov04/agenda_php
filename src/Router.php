@@ -33,4 +33,11 @@ class Router{
 	public function getRequestBody(){
         return $this->request->getRequestBody();
     }
+    
+    public function getUrlParams(){
+        return $this->request->getParams();
+    }
+    public function getUrlParam(int $index=0){
+        return $this->request->getParam($index);
+    }
 }
