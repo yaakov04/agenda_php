@@ -31,7 +31,7 @@ class ActiveRecord{
 		foreach($properties as $key => $value){
 			$values[] = "{$key} = '{$value}'";
 		}
-		$query =" UPDATE inventario SET ";
+		$query =" UPDATE ". static::$table ." SET ";
 		$query .= join(', ', $values);
 		$query .= " WHERE  ";
 	}
@@ -39,11 +39,11 @@ class ActiveRecord{
 	public function validate(){
 		$columns=array_slice(static::$columnsDB,1);
 			foreach($columns as $element){
-				if (!$this->$element)
-				{
+				if (!$this->$element){
 					 static::$errors[]="El campo {$element} es obligatorio";
 				}
 			}
+			return self::$errors;
 		}
 		
 	public function properties()
