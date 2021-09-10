@@ -21,5 +21,6 @@ $router->add("/api/contactos/{$id}", [ContactosController::class, 'find']);
 $router->add("/api/contactos", [ContactosController::class, 'all']);
 $router->add('/api/contactos', [ContactosController::class, 'create'], 'POST');
 $router->add("/api/contactos/{$id}", [ContactosController::class, 'update'], 'PATCH');
+$router->add("/api/contactos/{$id}", [ContactosController::class, 'delete'], 'DELETE');
 
 $router->run();

@@ -51,6 +51,12 @@ class ActiveRecord{
 		return array_shift($queryDB);
 	}
 	
+	public static function delete($id, $usuario_id){
+		$query= "DELETE FROM ". static::$table ." WHERE id = ${id} AND usuario_id = {$usuario_id}";
+		$queryDB= self::$db->query($query);	
+		return $queryDB;
+	}
+	
 	public  static function sqlQuery($query){
 		$queryDB= self::$db->query($query);
 		$arrayResult=[];
